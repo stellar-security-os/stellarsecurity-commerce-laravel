@@ -1,0 +1,25 @@
+{
+  "name": "stellarsecurity/stellarsecurity-commerce-laravel",
+  "description": "Stellar Commerce Core/Base API client for Laravel UI APIs (Client -> UI API -> Base API).",
+  "type": "library",
+  "license": "proprietary",
+  "require": {
+    "php": "^8.2",
+    "illuminate/support": "^12.0",
+    "illuminate/http": "^12.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "StellarSecurity\\\\CommerceLaravel\\\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "StellarSecurity\\\\CommerceLaravel\\\\CommerceLaravelServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
