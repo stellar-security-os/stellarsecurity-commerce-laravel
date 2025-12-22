@@ -10,13 +10,13 @@
   },
   "autoload": {
     "psr-4": {
-      "StellarSecurity\\\\CommerceLaravel\\\\": "src/"
+      "StellarSecurity\\CommerceLaravel\\": "src/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "StellarSecurity\\\\CommerceLaravel\\\\CommerceLaravelServiceProvider"
+        "StellarSecurity\\CommerceLaravel\\CommerceLaravelServiceProvider"
       ]
     }
   },
