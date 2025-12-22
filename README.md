@@ -4,23 +4,8 @@ Laravel client package used by UI APIs to call the Stellar Commerce Core/Base AP
 
 ## Install (local path)
 
-In your UI API `composer.json`:
-
-```json
-{
-  "repositories": [
-    { "type": "path", "url": "../stellarsecurity-commerce-laravel_1_0_0" }
-  ],
-  "require": {
-    "stellarsecurity/stellarsecurity-commerce-laravel": "*"
-  }
-}
-```
-
-Then run:
-
 ```bash
-composer update stellarsecurity/stellarsecurity-commerce-laravel
+composer require stellarsecurity/stellarsecurity-commerce-laravel
 ```
 
 Publish config:
