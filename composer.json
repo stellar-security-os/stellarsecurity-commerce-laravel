@@ -1,6 +1,6 @@
 {
   "name": "stellarsecurity/stellarsecurity-commerce-laravel",
-  "description": "Stellar Commerce Core/Base API client for Laravel UI APIs (Client -> UI API -> Base API).",
+  "description": "Laravel client for Stellar Commerce Core/Base API (Client -> UI API -> Base API).",
   "type": "library",
   "license": "proprietary",
   "require": {

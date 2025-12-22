@@ -2,13 +2,13 @@
 
 Laravel client package used by UI APIs to call the Stellar Commerce Core/Base API.
 
-## Install (local path)
+## Install
 
 ```bash
 composer require stellarsecurity/stellarsecurity-commerce-laravel
 ```
 
-Publish config:
+## Publish config
 
 ```bash
 php artisan vendor:publish --tag=stellarsecurity-commerce-laravel-config

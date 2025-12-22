@@ -1,0 +1,10 @@
+PROPRIETARY LICENSE
+
+Copyright (c) Stellar Security
+
+This code is proprietary. No permission is granted to use, copy, modify,
+publish, distribute, sublicense, and/or sell copies of the Software
+without explicit written permission from Stellar Security.
+
+If you intended this to be open-source on a public registry, replace this file
+and the `license` field in composer.json accordingly (e.g., MIT/Apache-2.0).

@@ -5,11 +5,6 @@ namespace StellarSecurity\CommerceLaravel\DTO;
 class CreateOrderRequest
 {
     /**
-     * Note: idempotencyKey should be unique per checkout attempt.
-     *
-     * Prices must be computed by the Commerce Core API. The UI API must not send
-     * shipping/tax/discount amounts. Send couponCode/shippingMethod instead.
-     *
      * @param OrderItem[] $items
      */
     public function __construct(
