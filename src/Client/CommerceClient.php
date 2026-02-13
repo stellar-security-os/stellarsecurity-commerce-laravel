@@ -9,6 +9,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use StellarSecurity\CommerceLaravel\Contracts\CommerceClientContract;
+use StellarSecurity\CommerceLaravel\DTO\CheckCouponCodeRequest;
 use StellarSecurity\CommerceLaravel\DTO\CreateOrderRequest;
 use StellarSecurity\CommerceLaravel\DTO\UpdateStatusRequest;
 use StellarSecurity\CommerceLaravel\Exceptions\NotFoundException;
@@ -44,6 +45,11 @@ class CommerceClient implements CommerceClientContract
     public function updateOrderStatus(string $orderId, UpdateStatusRequest $request, ?string $requestId = null): array
     {
         return $this->patch('/orders/' . urlencode($orderId) . '/status', $request->toArray(), $requestId);
+    }
+
+    public function checkCouponCode(CheckCouponCodeRequest $request, ?string $requestId = null): array
+    {
+        return $this->post('/coupons/check', $request->toArray(), $requestId);
     }
 
     private function get(string $path, array $query = [], ?string $requestId = null): array

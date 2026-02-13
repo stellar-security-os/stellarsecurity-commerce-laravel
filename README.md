@@ -45,6 +45,7 @@ Send:
 
 ```php
 use StellarSecurity\CommerceLaravel\Contracts\CommerceClientContract;
+use StellarSecurity\CommerceLaravel\DTO\CheckCouponCodeRequest;
 use StellarSecurity\CommerceLaravel\DTO\CreateOrderRequest;
 use StellarSecurity\CommerceLaravel\DTO\OrderItem;
 
@@ -63,4 +64,9 @@ $req = new CreateOrderRequest(
 );
 
 $result = $this->commerce->createOrder($req);
+
+// Check a coupon code (exists + discount info)
+$couponResult = $this->commerce->checkCouponCode(
+  new CheckCouponCodeRequest(couponCode: 'TEST10')
+);
 ```

@@ -3,6 +3,7 @@
 namespace StellarSecurity\CommerceLaravel\Contracts;
 
 use StellarSecurity\CommerceLaravel\DTO\CreateOrderRequest;
+use StellarSecurity\CommerceLaravel\DTO\CheckCouponCodeRequest;
 use StellarSecurity\CommerceLaravel\DTO\UpdateStatusRequest;
 
 interface CommerceClientContract
@@ -16,4 +17,6 @@ interface CommerceClientContract
     public function getOrder(string $orderId, ?string $requestId = null): array;
 
     public function updateOrderStatus(string $orderId, UpdateStatusRequest $request, ?string $requestId = null): array;
+
+    public function checkCouponCode(CheckCouponCodeRequest $request, ?string $requestId = null): array;
 }
