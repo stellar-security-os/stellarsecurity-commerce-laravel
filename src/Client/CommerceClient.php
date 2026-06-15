@@ -42,6 +42,24 @@ class CommerceClient implements CommerceClientContract
         return $this->get('/orders/' . urlencode($orderId), [], $requestId);
     }
 
+    /**
+     * NEW: Base API - list orders with filters + pagination
+     */
+    public function listOrders(array $query = [], ?string $requestId = null): array
+    {
+        return $this->get('/orders', $query, $requestId);
+    }
+
+    /**
+     * NEW: Base API - list order items
+     */
+    public function listOrderItems(array $query = [], ?string $requestId = null): array
+    {
+        return $this->get('/order-items', $query, $requestId);
+    }
+
+
+
     public function updateOrderStatus(string $orderId, UpdateStatusRequest $request, ?string $requestId = null): array
     {
         return $this->patch('/orders/' . urlencode($orderId) . '/status', $request->toArray(), $requestId);
