@@ -20,6 +20,13 @@ use StellarSecurity\CommerceLaravel\Exceptions\ValidationException;
 
 class CommerceClient implements CommerceClientContract
 {
+    private const DEFAULT_TIMEOUT_SECONDS = 30;
+    private const DEFAULT_CONNECT_TIMEOUT_SECONDS = 10;
+    private const DEFAULT_RETRY_TIMES = 5;
+    private const DEFAULT_RETRY_SLEEP_MS = 1000;
+    private const DEFAULT_RETRY_MULTIPLIER = 2;
+    private const DEFAULT_RETRY_MAX_SLEEP_MS = 10000;
+
     public function __construct(private array $config) {}
 
     public function listProducts(array $query = [], ?string $requestId = null): array
@@ -99,11 +106,17 @@ class CommerceClient implements CommerceClientContract
 
     private function request(): PendingRequest
     {
-        $retryTimes = (int) ($this->config['retry']['times'] ?? 0);
-        $retrySleepMs = (int) ($this->config['retry']['sleep_ms'] ?? 0);
+        $retryConfig = (array) ($this->config['retry'] ?? []);
 
-        $pending = Http::timeout((int) ($this->config['timeout_seconds'] ?? 10))
-            ->connectTimeout((int) ($this->config['connect_timeout_seconds'] ?? 5))
+        $timeoutSeconds = max(1, (int) ($this->config['timeout_seconds'] ?? self::DEFAULT_TIMEOUT_SECONDS));
+        $connectTimeoutSeconds = max(1, (int) ($this->config['connect_timeout_seconds'] ?? self::DEFAULT_CONNECT_TIMEOUT_SECONDS));
+        $retryTimes = max(0, (int) ($retryConfig['times'] ?? self::DEFAULT_RETRY_TIMES));
+        $retrySleepMs = max(0, (int) ($retryConfig['sleep_ms'] ?? self::DEFAULT_RETRY_SLEEP_MS));
+        $retryMultiplier = max(1, (int) ($retryConfig['multiplier'] ?? self::DEFAULT_RETRY_MULTIPLIER));
+        $retryMaxSleepMs = max($retrySleepMs, (int) ($retryConfig['max_sleep_ms'] ?? self::DEFAULT_RETRY_MAX_SLEEP_MS));
+
+        $pending = Http::timeout($timeoutSeconds)
+            ->connectTimeout($connectTimeoutSeconds)
             ->acceptJson()
             ->withHeaders((array) ($this->config['headers'] ?? []));
 
@@ -113,18 +126,32 @@ class CommerceClient implements CommerceClientContract
         }
 
         if ($retryTimes > 0) {
-            $pending = $pending->retry($retryTimes, $retrySleepMs, function ($exception) {
-                if ($exception instanceof ConnectionException) {
-                    return true;
-                }
+            $pending = $pending->retry(
+                $retryTimes,
+                function (int $attempt) use ($retrySleepMs, $retryMultiplier, $retryMaxSleepMs): int {
+                    if ($retrySleepMs <= 0) {
+                        return 0;
+                    }
 
-                if ($exception instanceof RequestException) {
-                    $code = $exception->response?->status();
-                    return is_int($code) && $code >= 500;
-                }
+                    $sleep = $retrySleepMs * ($retryMultiplier ** max(0, $attempt - 1));
 
-                return false;
-            }, true);
+                    return (int) min($sleep, $retryMaxSleepMs);
+                },
+                function ($exception): bool {
+                    if ($exception instanceof ConnectionException) {
+                        return true;
+                    }
+
+                    if ($exception instanceof RequestException) {
+                        $code = $exception->response?->status();
+
+                        return is_int($code) && in_array($code, [408, 429, 500, 502, 503, 504], true);
+                    }
+
+                    return false;
+                },
+                true
+            );
         }
 
         return $pending;

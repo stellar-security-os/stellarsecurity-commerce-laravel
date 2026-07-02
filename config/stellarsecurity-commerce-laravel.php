@@ -10,12 +10,14 @@ return [
         'password' => env('STELLAR_COMMERCE_CORE_BASIC_AUTH_PASS', ''),
     ],
 
-    'timeout_seconds' => (int) env('STELLAR_COMMERCE_CORE_TIMEOUT_SECONDS', 10),
-    'connect_timeout_seconds' => (int) env('STELLAR_COMMERCE_CORE_CONNECT_TIMEOUT_SECONDS', 5),
+    'timeout_seconds' => (int) env('STELLAR_COMMERCE_CORE_TIMEOUT_SECONDS', 30),
+    'connect_timeout_seconds' => (int) env('STELLAR_COMMERCE_CORE_CONNECT_TIMEOUT_SECONDS', 10),
 
     'retry' => [
-        'times' => (int) env('STELLAR_COMMERCE_CORE_RETRY_TIMES', 2),
-        'sleep_ms' => (int) env('STELLAR_COMMERCE_CORE_RETRY_SLEEP_MS', 200),
+        'times' => (int) env('STELLAR_COMMERCE_CORE_RETRY_TIMES', 5),
+        'sleep_ms' => (int) env('STELLAR_COMMERCE_CORE_RETRY_SLEEP_MS', 1000),
+        'multiplier' => (int) env('STELLAR_COMMERCE_CORE_RETRY_MULTIPLIER', 2),
+        'max_sleep_ms' => (int) env('STELLAR_COMMERCE_CORE_RETRY_MAX_SLEEP_MS', 10000),
     ],
 
     'headers' => [
